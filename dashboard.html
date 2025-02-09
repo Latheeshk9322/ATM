@@ -1,0 +1,183 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Welcome to Your ATM Dashboard</h2>
+        <p id="userBalance">Loading balance...</p>
+        <div class="buttons">
+            <button onclick="checkBalance()">Check Balance</button>
+            <button onclick="withdrawMoney()">Withdraw Money</button>
+            <button onclick="depositMoney()">Deposit Money</button>
+            <button onclick="viewStatements()">View Statements</button>
+            <button onclick="transferMoney()">Transfer Money</button>
+            <button onclick="logout()">Exit</button>
+        </div>
+    </div>
+    
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const accountNumber = urlParams.get('account');
+        
+        function fetchUserData() {
+            fetch("/get_account_details?account=" + accountNumber)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("userBalance").textContent = "Balance: $" + data.balance;
+                    } else {
+                        alert("User not found!");
+                        window.location.href = "index.html";
+                    }
+                });
+        }
+        
+        function checkBalance() {
+            alert(document.getElementById("userBalance").textContent);
+        }
+        
+        function withdrawMoney() {
+            let amount = prompt("Enter amount to withdraw:");
+            if (amount && !isNaN(amount)) {
+                fetch("/withdraw", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ account: accountNumber, amount: amount })
+                }).then(response => response.json()).then(data => {
+                    alert(data.message);
+                    fetchUserData();
+                });
+            }
+        }
+        
+        function depositMoney() {
+            let amount = prompt("Enter amount to deposit:");
+            if (amount && !isNaN(amount)) {
+                fetch("/deposit", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ account: accountNumber, amount: amount })
+                }).then(response => response.json()).then(data => {
+                    alert(data.message);
+                    fetchUserData();
+                });
+            }
+        }
+        
+        function viewStatements() {
+            fetch("/view_statements?account=" + accountNumber)
+                .then(response => response.json())
+                .then(data => {
+                    alert("Transaction History: " + data.transactions);
+                });
+        }
+        
+        function transferMoney() {
+            let recipient = prompt("Enter recipient account number:");
+            let amount = prompt("Enter amount to transfer:");
+            if (recipient && amount && !isNaN(amount)) {
+                fetch("/transfer", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ sender: accountNumber, receiver: recipient, amount: amount })
+                }).then(response => response.json()).then(data => {
+                    alert(data.message);
+                    fetchUserData();
+                });
+            }
+        }
+        
+        function logout() {
+            window.location.href = "index.html";
+        }
+        
+        fetchUserData();
+    </script>
+</body>
+</html> -->
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Welcome to Your ATM Dashboard</h2>
+        <p id="userBalance">Loading balance...</p>
+        <div class="buttons">
+            <button onclick="checkBalance()">Check Balance</button>
+            <button onclick="withdrawMoney()">Withdraw Money</button>
+            <button onclick="depositMoney()">Deposit Money</button>
+            <button onclick="viewStatements()">View Statements</button>
+            <button onclick="transferMoney()">Transfer Money</button>
+            <button onclick="logout()">Exit</button>
+        </div>
+    </div>
+    
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const accountNumber = urlParams.get('account');
+        
+        function fetchUserData() {
+            fetch("bank_database.csv")
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split("\n").map(row => row.split(","));
+                    const user = rows.find(row => row[0] === accountNumber);
+                    if (user) {
+                        document.getElementById("userBalance").textContent = "Balance: $" + user[2];
+                    } else {
+                        alert("User not found!");
+                        window.location.href = "index.html";
+                    }
+                });
+        }
+        
+        function checkBalance() {
+            alert(document.getElementById("userBalance").textContent);
+        }
+        
+        function withdrawMoney() {
+            let amount = prompt("Enter amount to withdraw:");
+            if (amount && !isNaN(amount)) {
+                alert("$" + amount + " withdrawn successfully.");
+            }
+        }
+        
+        function depositMoney() {
+            let amount = prompt("Enter amount to deposit:");
+            if (amount && !isNaN(amount)) {
+                alert("$" + amount + " deposited successfully.");
+            }
+        }
+        
+        function viewStatements() {
+            alert("Transaction history will be displayed here.");
+        }
+        
+        function transferMoney() {
+            let recipient = prompt("Enter recipient account number:");
+            let amount = prompt("Enter amount to transfer:");
+            if (recipient && amount && !isNaN(amount)) {
+                alert("$" + amount + " transferred to account " + recipient + " successfully.");
+            }
+        }
+        
+        function logout() {
+            window.location.href = "index.html";
+        }
+        
+        fetchUserData();
+    </script>
+</body>
+</html> --> 
